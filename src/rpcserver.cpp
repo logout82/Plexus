@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2015-2017 The PIVX developers
-// Copyright (c) 2017 The Prufus developers
+// Copyright (c) 2017 The Plexus developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -220,10 +220,10 @@ Value stop(const Array& params, bool fHelp)
     if (fHelp || params.size() > 1)
         throw runtime_error(
             "stop\n"
-            "\nStop PRUFUS server.");
+            "\nStop Plexus server.");
     // Shutdown will take long enough that the response should get back
     StartShutdown();
-    return "PRUFUS server stopping";
+    return "Plexus server stopping";
 }
 
 
@@ -300,36 +300,36 @@ static const CRPCCommand vRPCCommands[] =
         {"hidden", "reconsiderblock", &reconsiderblock, true, true, false},
         {"hidden", "setmocktime", &setmocktime, true, false, false},
 
-        /* Prufus features */
-        {"prufus", "masternode", &masternode, true, true, false},
-        {"prufus", "listmasternodes", &listmasternodes, true, true, false},
-        {"prufus", "getmasternodecount", &getmasternodecount, true, true, false},
-        {"prufus", "masternodeconnect", &masternodeconnect, true, true, false},
-        {"prufus", "masternodecurrent", &masternodecurrent, true, true, false},
-        {"prufus", "masternodedebug", &masternodedebug, true, true, false},
-        {"prufus", "startmasternode", &startmasternode, true, true, false},
-        {"prufus", "createmasternodekey", &createmasternodekey, true, true, false},
-        {"prufus", "getmasternodeoutputs", &getmasternodeoutputs, true, true, false},
-        {"prufus", "listmasternodeconf", &listmasternodeconf, true, true, false},
-        {"prufus", "getmasternodestatus", &getmasternodestatus, true, true, false},
-        {"prufus", "getmasternodewinners", &getmasternodewinners, true, true, false},
-        {"prufus", "getmasternodescores", &getmasternodescores, true, true, false},
-        {"prufus", "mnbudget", &mnbudget, true, true, false},
-        {"prufus", "preparebudget", &preparebudget, true, true, false},
-        {"prufus", "submitbudget", &submitbudget, true, true, false},
-        {"prufus", "mnbudgetvote", &mnbudgetvote, true, true, false},
-        {"prufus", "getbudgetvotes", &getbudgetvotes, true, true, false},
-        {"prufus", "getnextsuperblock", &getnextsuperblock, true, true, false},
-        {"prufus", "getbudgetprojection", &getbudgetprojection, true, true, false},
-        {"prufus", "getbudgetinfo", &getbudgetinfo, true, true, false},
-        {"prufus", "mnbudgetrawvote", &mnbudgetrawvote, true, true, false},
-        {"prufus", "mnfinalbudget", &mnfinalbudget, true, true, false},
-        {"prufus", "checkbudgets", &checkbudgets, true, true, false},
-        {"prufus", "mnsync", &mnsync, true, true, false},
-        {"prufus", "spork", &spork, true, true, false},
-        {"prufus", "getpoolinfo", &getpoolinfo, true, true, false},
+        /* Plexus features */
+        {"plexus", "masternode", &masternode, true, true, false},
+        {"plexus", "listmasternodes", &listmasternodes, true, true, false},
+        {"plexus", "getmasternodecount", &getmasternodecount, true, true, false},
+        {"plexus", "masternodeconnect", &masternodeconnect, true, true, false},
+        {"plexus", "masternodecurrent", &masternodecurrent, true, true, false},
+        {"plexus", "masternodedebug", &masternodedebug, true, true, false},
+        {"plexus", "startmasternode", &startmasternode, true, true, false},
+        {"plexus", "createmasternodekey", &createmasternodekey, true, true, false},
+        {"plexus", "getmasternodeoutputs", &getmasternodeoutputs, true, true, false},
+        {"plexus", "listmasternodeconf", &listmasternodeconf, true, true, false},
+        {"plexus", "getmasternodestatus", &getmasternodestatus, true, true, false},
+        {"plexus", "getmasternodewinners", &getmasternodewinners, true, true, false},
+        {"plexus", "getmasternodescores", &getmasternodescores, true, true, false},
+        {"plexus", "mnbudget", &mnbudget, true, true, false},
+        {"plexus", "preparebudget", &preparebudget, true, true, false},
+        {"plexus", "submitbudget", &submitbudget, true, true, false},
+        {"plexus", "mnbudgetvote", &mnbudgetvote, true, true, false},
+        {"plexus", "getbudgetvotes", &getbudgetvotes, true, true, false},
+        {"plexus", "getnextsuperblock", &getnextsuperblock, true, true, false},
+        {"plexus", "getbudgetprojection", &getbudgetprojection, true, true, false},
+        {"plexus", "getbudgetinfo", &getbudgetinfo, true, true, false},
+        {"plexus", "mnbudgetrawvote", &mnbudgetrawvote, true, true, false},
+        {"plexus", "mnfinalbudget", &mnfinalbudget, true, true, false},
+        {"plexus", "checkbudgets", &checkbudgets, true, true, false},
+        {"plexus", "mnsync", &mnsync, true, true, false},
+        {"plexus", "spork", &spork, true, true, false},
+        {"plexus", "getpoolinfo", &getpoolinfo, true, true, false},
 #ifdef ENABLE_WALLET
-        {"prufus", "obfuscation", &obfuscation, false, false, true}, /* not threadSafe because of SendMoney */
+        {"plexus", "obfuscation", &obfuscation, false, false, true}, /* not threadSafe because of SendMoney */
 
         /* Wallet */
         {"wallet", "addmultisigaddress", &addmultisigaddress, true, false, true},
@@ -594,16 +594,16 @@ void StartRPCThreads()
         unsigned char rand_pwd[32];
         GetRandBytes(rand_pwd, 32);
         uiInterface.ThreadSafeMessageBox(strprintf(
-                                             _("To use prufusd, or the -server option to prufus-qt, you must set an rpcpassword in the configuration file:\n"
+                                             _("To use plexusd, or the -server option to plexus-qt, you must set an rpcpassword in the configuration file:\n"
                                                "%s\n"
                                                "It is recommended you use the following random password:\n"
-                                               "rpcuser=prufusrpc\n"
+                                               "rpcuser=plexusrpc\n"
                                                "rpcpassword=%s\n"
                                                "(you do not need to remember this password)\n"
                                                "The username and password MUST NOT be the same.\n"
                                                "If the file does not exist, create it with owner-readable-only file permissions.\n"
                                                "It is also recommended to set alertnotify so you are notified of problems;\n"
-                                               "for example: alertnotify=echo %%s | mail -s \"PRUFUS Alert\" admin@foo.com\n"),
+                                               "for example: alertnotify=echo %%s | mail -s \"Plexus Alert\" admin@foo.com\n"),
                                              GetConfigFile().string(),
                                              EncodeBase58(&rand_pwd[0], &rand_pwd[0] + 32)),
             "", CClientUIInterface::MSG_ERROR | CClientUIInterface::SECURE);
@@ -1054,7 +1054,7 @@ std::vector<std::string> CRPCTable::listCommands() const
 
 std::string HelpExampleCli(string methodname, string args)
 {
-    return "> prufus-cli " + methodname + " " + args + "\n";
+    return "> plexus-cli " + methodname + " " + args + "\n";
 }
 
 std::string HelpExampleRpc(string methodname, string args)

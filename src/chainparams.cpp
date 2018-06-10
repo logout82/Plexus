@@ -75,7 +75,7 @@ static void convertSeed6(std::vector<CAddress>& vSeedsOut, const SeedSpec6* data
 
 static Checkpoints::MapCheckpoints mapCheckpoints =
     boost::assign::map_list_of
-    (0, uint256("0x000006035306076f7e5f1e41022aedacbf282d2f266c5e5d5c7e2fa78804b9ec"))
+    (0, uint256("0x000007aca4c260aa1b6d542011769a2ddf8980295697d6e81642a5e6978737e1"))
     (1, uint256("0x0000013a8f38d69288a4e4bf1c368304a723d96c4de8cc82f6cdae2361c50cc1"))
     (2, uint256("0x00000c4860b764534bf09b4cec334978ebaa26fc38a66bec9a9d5f73ce7b0140"))
     (3, uint256("0x000009c30726a6d378118e34d6ad2a63b27028debab9d72f87ab133a7ed0975f"))
@@ -83,8 +83,8 @@ static Checkpoints::MapCheckpoints mapCheckpoints =
 
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
-    1528089890, // * UNIX timestamp of last checkpoint block
-    6,    // * total number of transactions between genesis and last checkpoint
+    1528625155, // * UNIX timestamp of last checkpoint block
+    0,    // * total number of transactions between genesis and last checkpoint
                 //   (the tx=... number in the SetBestChain debug.log lines)
     100        // * estimated number of transactions per day after checkpoint
 };
@@ -149,24 +149,24 @@ public:
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        genesis.nTime = 1528074123;	///06/06/2018
+        genesis.nTime = 1528625155;	///10/06/2018
         genesis.nBits = 0x1e0ffff0;
-        genesis.nNonce = 1166870;
+        genesis.nNonce = 289114;
 
-	bool startNewChain = true;
+	bool startNewChain = false;
 	if(startNewChain == true) { MineGenesisBlock(genesis); }
 
         hashGenesisBlock = genesis.GetHash();
 
 	if(!startNewChain){
 
-        	assert(hashGenesisBlock == uint256("0x000006035306076f7e5f1e41022aedacbf282d2f266c5e5d5c7e2fa78804b9ec"));
+        	assert(hashGenesisBlock == uint256("0x000007aca4c260aa1b6d542011769a2ddf8980295697d6e81642a5e6978737e1"));
         	assert(genesis.hashMerkleRoot == uint256("0xf54ee24c17c4edeb780e300411ca689c58b09e41b6b4c357ef1e65faa34a4d39"));
 	}
 
-        vSeeds.push_back(CDNSSeedData("prufus one","118.69.37.45"));
-        vSeeds.push_back(CDNSSeedData("prufus two","45.76.228.106"));
-	vSeeds.push_back(CDNSSeedData("prufus three","45.76.29.178"));
+        //vSeeds.push_back(CDNSSeedData("prufus one","118.69.37.45"));
+        //vSeeds.push_back(CDNSSeedData("prufus two","45.76.228.106"));
+	//vSeeds.push_back(CDNSSeedData("prufus three","45.76.29.178"));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 55);	//Start at P
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 15);	//Start at 7
