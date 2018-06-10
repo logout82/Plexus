@@ -153,7 +153,7 @@ public:
         genesis.nBits = 0x1e0ffff0;
         genesis.nNonce = 1166870;
 
-	bool startNewChain = false;
+	bool startNewChain = true;
 	if(startNewChain == true) { MineGenesisBlock(genesis); }
 
         hashGenesisBlock = genesis.GetHash();
