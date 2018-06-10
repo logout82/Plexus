@@ -1,1 +1,1 @@
-#### Prufus Core Wallet
+#### Plexus Core Wallet
