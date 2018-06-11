@@ -162,9 +162,9 @@ public:
 	}
 
         vSeeds.push_back(CDNSSeedData("prufus 1","118.69.37.45"));
-        vSeeds.push_back(CDNSSeedData("prufus 2","199.247.7.15"));
-	vSeeds.push_back(CDNSSeedData("prufus 3","45.77.62.252"));
-	vSeeds.push_back(CDNSSeedData("prufus 4","8.9.3.219"));
+        vSeeds.push_back(CDNSSeedData("prufus 2","149.28.112.215"));
+	vSeeds.push_back(CDNSSeedData("prufus 3","45.76.29.178"));
+	vSeeds.push_back(CDNSSeedData("prufus 4","140.82.15.92"));
 
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 55);	//Start at P
@@ -190,7 +190,7 @@ public:
         nPoolMaxTransactions = 3;
         strSporkKey = "04db7dab5e593c87aff87c77991a104830b612f2b791dd9d2292503959907b358f648bd525ba73e5fa22dc2234429a58da7e6014588dc1f5253749a7218b2a3ccf";
         strObfuscationPoolDummyAddress = "ETVDjeQDvFXz2gmip9NDN3Qcm295h4Kh7o";
-        nStartMasternodePayments = 1528074123;	//Start payment MN from 24/05/2018
+        nStartMasternodePayments = 1528679162;	//Start payment MN from 24/05/2018
     }
 
     const Checkpoints::CCheckpointData& Checkpoints() const
