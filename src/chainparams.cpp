@@ -149,11 +149,11 @@ public:
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        genesis.nTime = 1528625155;	///10/06/2018
+        genesis.nTime = 1528679162;	///06/11/2018
         genesis.nBits = 0x1e0ffff0;
         genesis.nNonce = 289114;
 
-	bool startNewChain = false;
+	bool startNewChain = true;
 	if(startNewChain == true) { MineGenesisBlock(genesis); }
 
         hashGenesisBlock = genesis.GetHash();
