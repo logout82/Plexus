@@ -165,6 +165,7 @@ public:
         vSeeds.push_back(CDNSSeedData("prufus 2","149.28.112.215"));
 	vSeeds.push_back(CDNSSeedData("prufus 3","45.76.29.178"));
 	vSeeds.push_back(CDNSSeedData("prufus 4","140.82.15.92"));
+	vSeeds.push_back(CDNSSeedData("prufus 5","149.28.126.154"));
 
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 55);	//Start at P
