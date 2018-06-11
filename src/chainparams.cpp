@@ -75,11 +75,7 @@ static void convertSeed6(std::vector<CAddress>& vSeedsOut, const SeedSpec6* data
 
 static Checkpoints::MapCheckpoints mapCheckpoints =
     boost::assign::map_list_of
-    (0, uint256("0x00000f4fd4516a0c639ce5875e09f66490b2ee5d7390213073c0f4034c628810"))
-    (1, uint256("0x0000013a8f38d69288a4e4bf1c368304a723d96c4de8cc82f6cdae2361c50cc1"))
-    (2, uint256("0x00000c4860b764534bf09b4cec334978ebaa26fc38a66bec9a9d5f73ce7b0140"))
-    (3, uint256("0x000009c30726a6d378118e34d6ad2a63b27028debab9d72f87ab133a7ed0975f"))
-    (5, uint256("0x000001248be4e88744155d73783b077df40ee38673a70d73f6e1fcc2c65b607e"));
+    (0, uint256("0x00000f4fd4516a0c639ce5875e09f66490b2ee5d7390213073c0f4034c628810"));
 
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
@@ -122,7 +118,7 @@ public:
         pchMessageStart[2] = 0xa3;
         pchMessageStart[3] = 0xe2;
         vAlertPubKey = ParseHex("042aaee5ca5468608d1df8a7a2d01ff1d4af66a8d35dd0e8900322b4fc427aceec5943be2876e61876079fd76cbdfb2784262aa4ec84a5cfeab9e6c605c9dd67a4");
-        nDefaultPort = 12457;		//12457 for safety swap
+        nDefaultPort = 31001;		//12457 for safety swap
         bnProofOfWorkLimit = ~uint256(0) >> 20; // FIX starting difficulty is 1 / 2^12
         nSubsidyHalvingInterval = 210000;
         nMaxReorganizationDepth = 100;
