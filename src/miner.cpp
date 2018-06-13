@@ -494,7 +494,7 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
                 if (GetTime() - mapHashedBlocks[chainActive.Tip()->nHeight] < max(pwallet->nHashInterval, (unsigned int)1)) // wait half of the nHashDrift with max wait of 3 minutes
                 {
 
-		LogPrintf("POS max(pwallet->nHashInterval: %d \n",max(pwallet->nHashInterval, (unsigned int)1));
+		//LogPrintf("POS max(pwallet->nHashInterval: %d \n",max(pwallet->nHashInterval, (unsigned int)1));
                     MilliSleep(5000);
                     continue;
                 }
