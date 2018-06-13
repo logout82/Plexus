@@ -28,7 +28,7 @@ struct SeedSpec6 {
 /**
  * Main network
  */
-
+/*
 void MineGenesisBlock(CBlock &genesis)
 {
 	uint256 besthash = uint256();
@@ -49,7 +49,7 @@ while (uint256(genesis.GetHash()) > hashTarget) {
 //printf("HASH IS: %s\n", UintToArith256(genesis.GetHash()).ToString().c_str());
 	printf("Converting genesis hash to string: %s\n",genesis.ToString().c_str()); 
 }
-
+*/
 //! Convert the pnSeeds6 array into usable address objects.
 static void convertSeed6(std::vector<CAddress>& vSeedsOut, const SeedSpec6* data, unsigned int count)
 {
@@ -151,16 +151,16 @@ public:
         genesis.nBits = 0x1e0ffff0;
         genesis.nNonce = 780281;
 
-	bool startNewChain = false;
-	if(startNewChain == true) { MineGenesisBlock(genesis); }
+//	bool startNewChain = false;
+//	if(startNewChain == true) { MineGenesisBlock(genesis); }
 
         hashGenesisBlock = genesis.GetHash();
 
-	if(!startNewChain){
+//	if(!startNewChain){
 
         	assert(hashGenesisBlock == uint256("0x00000f4fd4516a0c639ce5875e09f66490b2ee5d7390213073c0f4034c628810"));
         	assert(genesis.hashMerkleRoot == uint256("0xf54ee24c17c4edeb780e300411ca689c58b09e41b6b4c357ef1e65faa34a4d39"));
-	}
+//	}
 
         vSeeds.push_back(CDNSSeedData("prufus 1","118.69.37.45"));
         vSeeds.push_back(CDNSSeedData("prufus 2","149.28.112.215"));
