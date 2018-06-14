@@ -113,10 +113,12 @@ public:
         nRejectBlockOutdatedMajority = 950;
         nToCheckBlockUpgradeMajority = 1000;
         nMinerThreads = 0;
-        nTargetTimespan = 1 * 60; // FIX: 60 seconds
+        nTargetTimespan = 40 * 60; // Update from Pow.cpp: 40 min
         nTargetSpacing = 1 * 60;  // FIX: 60 seconds
         nLastPOWBlock = 3200;
         nMaturity = 30;
+	//nStakeMinAge = 60 * 60;	//60 minute minable define in main.cpp at line 73 
+
         nMasternodeCountDrift = 20;
         nModifierUpdateBlock = 510;
         nMaxMoneyOut = 21000000 * COIN;
