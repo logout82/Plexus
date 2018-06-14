@@ -141,13 +141,13 @@ public:
         assert(genesis.hashMerkleRoot == uint256("0xf54ee24c17c4edeb780e300411ca689c58b09e41b6b4c357ef1e65faa34a4d39"));
 
 
-        vSeeds.push_back(CDNSSeedData("prufus 1","118.69.37.45"));
-        vSeeds.push_back(CDNSSeedData("prufus 2","149.28.112.215"));
-	vSeeds.push_back(CDNSSeedData("prufus 3","45.76.29.178"));
-	vSeeds.push_back(CDNSSeedData("prufus 4","140.82.15.92"));
-	vSeeds.push_back(CDNSSeedData("prufus 5","149.28.126.154"));
-	vSeeds.push_back(CDNSSeedData("prufus 6","144.202.48.33"));
-	vSeeds.push_back(CDNSSeedData("prufus 7","104.207.141.91"));
+        vSeeds.push_back(CDNSSeedData("plexus 1","118.69.37.45"));
+        vSeeds.push_back(CDNSSeedData("plexus 2","149.28.112.215"));
+	vSeeds.push_back(CDNSSeedData("plexus 3","45.76.29.178"));
+	vSeeds.push_back(CDNSSeedData("plexus 4","140.82.15.92"));
+	vSeeds.push_back(CDNSSeedData("plexus 5","149.28.126.154"));
+	vSeeds.push_back(CDNSSeedData("plexus 6","144.202.48.33"));
+	vSeeds.push_back(CDNSSeedData("plexus 7","104.207.141.91"));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 55);	//Start at P
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 15);	//Start at 7
