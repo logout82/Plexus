@@ -118,7 +118,7 @@ public:
         nLastPOWBlock = 3200;
         nMaturity = 30;
 	//nStakeMinAge = 60 * 60;	//60 minute minable define in main.cpp at line 73 
-
+	//nStakeSetUpdateTime = 300; // 5 minutes round
         nMasternodeCountDrift = 20;
         nModifierUpdateBlock = 510;
         nMaxMoneyOut = 21000000 * COIN;
