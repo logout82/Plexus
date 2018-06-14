@@ -2352,7 +2352,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
 
     if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
-
+	LogPrintf("IF -> GetTime() - nLastStakeSetUpdate::%d\n",GetTime() - nLastStakeSetUpdate);
         setStakeCoins.clear();
         if (!SelectStakeCoins(setStakeCoins, nBalance - nReserveBalance))
             return false;
@@ -2364,7 +2364,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 		LogPrintf("GetTime() - nLastStakeSetUpdate:%d\n",GetTime() - nLastStakeSetUpdate);
 		return false;
 	}
-	LogPrintf("POS_stepover:\n");
+
+LogPrintf("POS_stepover:\n");
 
     if (setStakeCoins.empty())
         return false;
