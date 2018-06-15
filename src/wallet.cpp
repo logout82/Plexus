@@ -39,7 +39,7 @@ unsigned int nTxConfirmTarget = 1;
 bool bSpendZeroConfChange = true;
 bool fSendFreeTransactions = false;
 bool fPayAtLeastCustomFee = true;
-
+static int nLastStakeSetUpdate = 0;
 /** 
  * Fees smaller than this (in duffs) are considered zero fee (for transaction creation)
  * We are ~100 times smaller then bitcoin now (2015-06-23), set minTxFee 10 times higher
@@ -2348,7 +2348,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // presstab HyperStake - Initialize as static and don't update the set on every run of CreateCoinStake() in order to lighten resource use
     static std::set<pair<const CWalletTx*, unsigned int> > setStakeCoins;
-    static int nLastStakeSetUpdate = 0;
+    
 
 
     if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
@@ -2360,12 +2360,12 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         nLastStakeSetUpdate = GetTime();
     }
 	else {
- 		LogPrintf("nStakeSetUpdateTime:%d\n",nStakeSetUpdateTime);
-		LogPrintf("GetTime() - nLastStakeSetUpdate:%d\n",GetTime() - nLastStakeSetUpdate);
+ 		//LogPrintf("nStakeSetUpdateTime:%d\n",nStakeSetUpdateTime);
+		//LogPrintf("GetTime() - nLastStakeSetUpdate:%d\n",GetTime() - nLastStakeSetUpdate);
 		return false;
 	}
 
-LogPrintf("POS_stepover:\n");
+//LogPrintf("POS_stepover:\n");
 
     if (setStakeCoins.empty())
         return false;
@@ -2510,7 +2510,7 @@ LogPrintf("POS_stepover:\n");
     }
 
     // Successfully generated coinstake
-    nLastStakeSetUpdate = 0; //this will trigger stake set to repopulate next round
+    //nLastStakeSetUpdate = 0; //this will trigger stake set to repopulate next round
     return true;
 }
 
