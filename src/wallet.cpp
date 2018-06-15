@@ -39,7 +39,7 @@ unsigned int nTxConfirmTarget = 1;
 bool bSpendZeroConfChange = true;
 bool fSendFreeTransactions = false;
 bool fPayAtLeastCustomFee = true;
-static int nLastStakeSetUpdate = 0;
+static int nLastStakeSetUpdate = GetTime();
 /** 
  * Fees smaller than this (in duffs) are considered zero fee (for transaction creation)
  * We are ~100 times smaller then bitcoin now (2015-06-23), set minTxFee 10 times higher
@@ -1559,36 +1559,6 @@ bool less_then_denom(const COutput& out1, const COutput& out2)
     return (!found1 && found2);
 }
 
-bool CWallet::SelectStakeCoins(std::set<std::pair<const CWalletTx*, unsigned int> >& setCoins, CAmount nTargetAmount) const
-{
-    vector<COutput> vCoins;
-    AvailableCoins(vCoins, true);
-    CAmount nAmountSelected = 0;
-
-    BOOST_FOREACH (const COutput& output, vCoins) {
-        const CWalletTx* pcoin = output.tx;
-        int i = output.i;
-        //make sure not to outrun target amount
-        if (nAmountSelected + pcoin->vout[i].nValue > nTargetAmount)
-            continue;
-
-        //check for min age
-        if (GetTime() - pcoin->GetTxTime() < nStakeMinAge + (nStakeMinAge/10))
-            continue;
-
-        //check that it is matured
-        if (output.nDepth < (pcoin->IsCoinStake() ? Params().COINBASE_MATURITY() : 10))
-            continue;
-
-        CAmount n = pcoin->vout[i].nValue;
-        pair<CAmount, pair<const CWalletTx*, unsigned int> > coin = make_pair(n, make_pair(pcoin, i));
-
-        //add to our stake set
-        setCoins.insert(coin.second);
-    }
-    return true;
-}
-
 bool CWallet::MintableCoins()
 {
     CAmount nBalance = GetBalance();
@@ -2322,6 +2292,48 @@ bool CWallet::CreateTransaction(CScript scriptPubKey, const CAmount& nValue, CWa
     return CreateTransaction(vecSend, wtxNew, reservekey, nFeeRet, strFailReason, coinControl, coin_type, useIX, nFeePay);
 }
 
+
+bool CWallet::SelectStakeCoins(std::set<std::pair<const CWalletTx*, unsigned int> >& setCoins, CAmount nTargetAmount) const
+{
+
+	if (GetTime() - nLastStakeSetUpdate < Params().TargetSpacing())
+//	LogPrintf("IF -> GetTime() - nLastStakeSetUpdate::%d\n",GetTime() - nLastStakeSetUpdate);
+		return false;
+	
+
+    vector<COutput> vCoins;
+    AvailableCoins(vCoins, true);
+    CAmount nAmountSelected = 0;
+    BOOST_FOREACH (const COutput& output, vCoins) {
+        const CWalletTx* pcoin = output.tx;
+        int i = output.i;
+        //make sure not to outrun target amount
+        if (nAmountSelected + pcoin->vout[i].nValue > nTargetAmount)
+            continue;
+
+        //check for min age
+        if (GetTime() - pcoin->GetTxTime() < nStakeMinAge + (nStakeMinAge/10))
+            continue;
+
+        //check that it is matured
+        if (output.nDepth < (pcoin->IsCoinStake() ? Params().COINBASE_MATURITY() : 10))
+            continue;
+
+        CAmount n = pcoin->vout[i].nValue;
+        pair<CAmount, pair<const CWalletTx*, unsigned int> > coin = make_pair(n, make_pair(pcoin, i));
+
+        //add to our stake set
+        setCoins.insert(coin.second);
+    }
+
+    if (!setCoins.empty()) {
+        nLastStakeSetUpdate = GetTime();
+	LogPrintf("CWallet::SelectStakeCoins empty: \n");
+        return true;
+    }
+    	return false;
+}
+
 // ppcoin: create coin stake transaction
 bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int64_t nSearchInterval, CMutableTransaction& txNew, unsigned int& nTxNewTime)
 {
@@ -2351,24 +2363,14 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     
 
 
-    if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
-	LogPrintf("IF -> GetTime() - nLastStakeSetUpdate::%d\n",GetTime() - nLastStakeSetUpdate);
-        setStakeCoins.clear();
+ //       setStakeCoins.clear();
         if (!SelectStakeCoins(setStakeCoins, nBalance - nReserveBalance))
             return false;
 
-        nLastStakeSetUpdate = GetTime();
-    }
-	else {
- 		//LogPrintf("nStakeSetUpdateTime:%d\n",nStakeSetUpdateTime);
-		//LogPrintf("GetTime() - nLastStakeSetUpdate:%d\n",GetTime() - nLastStakeSetUpdate);
-		return false;
-	}
 
-//LogPrintf("POS_stepover:\n");
 
-    if (setStakeCoins.empty())
-        return false;
+//    if (setStakeCoins.empty())
+//        return false;
 
     vector<const CWalletTx*> vwtxPrev;
 
