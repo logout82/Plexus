@@ -2328,10 +2328,10 @@ bool CWallet::SelectStakeCoins(std::set<std::pair<const CWalletTx*, unsigned int
 
     if (!setCoins.empty()) {
         nLastStakeSetUpdate = GetTime();
-	LogPrintf("CWallet::SelectStakeCoins empty: \n");
+	
         return true;
     }
-    	return false;
+    return false;
 }
 
 // ppcoin: create coin stake transaction
