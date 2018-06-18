@@ -2296,11 +2296,6 @@ bool CWallet::CreateTransaction(CScript scriptPubKey, const CAmount& nValue, CWa
 bool CWallet::SelectStakeCoins(std::set<std::pair<const CWalletTx*, unsigned int> >& setCoins, CAmount nTargetAmount) const
 {
 
-	if (GetTime() - nLastStakeSetUpdate < Params().TargetSpacing())
-//	LogPrintf("IF -> GetTime() - nLastStakeSetUpdate::%d\n",GetTime() - nLastStakeSetUpdate);
-		return false;
-	
-
     vector<COutput> vCoins;
     AvailableCoins(vCoins, true);
     CAmount nAmountSelected = 0;
@@ -2326,12 +2321,7 @@ bool CWallet::SelectStakeCoins(std::set<std::pair<const CWalletTx*, unsigned int
         setCoins.insert(coin.second);
     }
 
-    if (!setCoins.empty()) {
-        nLastStakeSetUpdate = GetTime();
-	
-        return true;
-    }
-    return false;
+    return true;
 }
 
 // ppcoin: create coin stake transaction
@@ -2361,16 +2351,12 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     // presstab HyperStake - Initialize as static and don't update the set on every run of CreateCoinStake() in order to lighten resource use
     static std::set<pair<const CWalletTx*, unsigned int> > setStakeCoins;
     
-
-
  //       setStakeCoins.clear();
-        if (!SelectStakeCoins(setStakeCoins, nBalance - nReserveBalance))
-            return false;
+    if (!SelectStakeCoins(setStakeCoins, nBalance - nReserveBalance))
+        return false;
 
-
-
-//    if (setStakeCoins.empty())
-//        return false;
+    if (setStakeCoins.empty())
+        return false;
 
     vector<const CWalletTx*> vwtxPrev;
 
@@ -2378,7 +2364,9 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     CScript scriptPubKeyKernel;
 
     //prevent staking a time that won't be accepted
-    if (GetAdjustedTime() <= chainActive.Tip()->nTime)
+   // if (GetAdjustedTime() <= chainActive.Tip()->nTime)
+    //    MilliSleep(10000);
+if (GetAdjustedTime() - chainActive.Tip()->GetBlockTime() < Params().TargetSpacing())
         MilliSleep(10000);
 
     BOOST_FOREACH (PAIRTYPE(const CWalletTx*, unsigned int) pcoin, setStakeCoins) {

@@ -58,7 +58,7 @@ public:
 uint64_t nLastBlockTx = 0;
 uint64_t nLastBlockSize = 0;
 int64_t nLastCoinStakeSearchInterval = 0;
-int64_t nLastCoinStakeSearchTime; // only initialized at startup
+//int64_t nLastCoinStakeSearchTime; // only initialized at startup
 
 // We want to sort transactions by priority and fee rate, so:
 typedef boost::tuple<double, CFeeRate, const CTransaction*> TxPriority;
@@ -96,7 +96,12 @@ void UpdateTime(CBlockHeader* pblock, const CBlockIndex* pindexPrev)
 
 bool HasStaked()
 {
-    return nLastCoinStakeSearchTime > 0 && nLastCoinStakeSearchInterval > 0;
+	bool nStaking = false;
+    if (mapHashedBlocks.count(chainActive.Tip()->nHeight))
+        nStaking = true;
+    else if (mapHashedBlocks.count(chainActive.Tip()->nHeight - 1) && nLastCoinStakeSearchInterval)
+        nStaking = true;
+    return nStaking;
 }
 
 
@@ -126,9 +131,9 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
     pblocktemplate->vTxSigOps.push_back(-1); // updated at end
 
     // ppcoin: if coinstake available add coinstake tx
-      //static int64_t nLastCoinStakeSearchTime = GetAdjustedTime(); // only initialized at startup
-  	if(nLastCoinStakeSearchTime==0)
-		nLastCoinStakeSearchTime = GetAdjustedTime(); // only initialized at startup
+    static int64_t nLastCoinStakeSearchTime = GetAdjustedTime(); // only initialized at startup
+  	//if(nLastCoinStakeSearchTime==0)
+	//	nLastCoinStakeSearchTime = GetAdjustedTime(); // only initialized at startup
 
     if (fProofOfStake) {
         boost::this_thread::interruption_point();
@@ -138,7 +143,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
         CMutableTransaction txCoinStake;
         int64_t nSearchTime = pblock->nTime; // search to current time
         bool fStakeFound = false;
-        if (nSearchTime > nLastCoinStakeSearchTime) {
+        if (nSearchTime >= nLastCoinStakeSearchTime) {
 
 	//LogPrintf("nSearchTime:%d\n",nSearchTime);
 	//LogPrintf("nLastCoinStakeSearchTime:%d\n",nLastCoinStakeSearchTime);
@@ -152,7 +157,6 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
                 fStakeFound = true;
             }
             nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
-	//LogPrintf("nLastCoinStakeSearchInterval:%d\n",nLastCoinStakeSearchInterval);
             nLastCoinStakeSearchTime = nSearchTime;
         }
 
@@ -457,7 +461,8 @@ bool ProcessBlockFound(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
 }
 
 bool fGenerateBitcoins = false;
-
+static bool fMintableCoins = false;
+static int nMintableLastCheck = 0;
 // ***TODO*** that part changed in bitcoin, we are using a mix with old one here for now
 
 void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
@@ -474,14 +479,7 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
     unsigned int nExtraNonce = 0;
 
     //control the amount of times the client will check for mintable coins
-    static bool fMintableCoins = false;
-    static int nMintableLastCheck = 0;
 
-    if (fProofOfStake && (GetTime() - nMintableLastCheck > 5 * 60)) // 5 minute check time
-    {
-        nMintableLastCheck = GetTime();
-        fMintableCoins = pwallet->MintableCoins();
-    }
 
     while (fGenerateBitcoins || fProofOfStake) {
 
@@ -494,15 +492,28 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
         }
 
         if (fProofOfStake) {
+
+	    if ((GetTime() - nMintableLastCheck > 5 * 60)) // 5 minute check time
+	    {
+		nMintableLastCheck = GetTime();
+		fMintableCoins = pwallet->MintableCoins();
+	    }
             if (chainActive.Tip()->nHeight < Params().LAST_POW_BLOCK()) {
 		
                 MilliSleep(5000);
                 continue;
             }
 	
-            while (chainActive.Tip()->nTime < 1528679162 || vNodes.empty() || pwallet->IsLocked() || !pwallet->MintableCoins() || nReserveBalance >= pwallet->GetBalance() || !masternodeSync.IsSynced()) {
+            while (vNodes.empty() || pwallet->IsLocked() || !fMintableCoins || nReserveBalance >= pwallet->GetBalance() || !masternodeSync.IsSynced()) {
 	
                 nLastCoinStakeSearchInterval = 0;
+             if (!fMintableCoins) {
+                    if (GetTime() - nMintableLastCheck > 1 * 60) // 1 minute check time
+                    {
+                        nMintableLastCheck = GetTime();
+                        fMintableCoins = pwallet->MintableCoins();
+                    }
+                }
                 MilliSleep(5000);
                 if (!fGenerateBitcoins && !fProofOfStake)
                     continue;
