@@ -493,7 +493,7 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
 
         if (fProofOfStake) {
 
-	    if ((GetTime() - nMintableLastCheck > 5 * 60)) // 5 minute check time
+	    if ((GetTime() - nMintableLastCheck > 30)) // 30 seconds check time un-mint
 	    {
 		nMintableLastCheck = GetTime();
 		fMintableCoins = pwallet->MintableCoins();
@@ -507,8 +507,8 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
             while (vNodes.empty() || pwallet->IsLocked() || !fMintableCoins || nReserveBalance >= pwallet->GetBalance() || !masternodeSync.IsSynced()) {
 	
                 nLastCoinStakeSearchInterval = 0;
-             if (!fMintableCoins) {
-                    if (GetTime() - nMintableLastCheck > 1 * 60) // 1 minute check time
+             if (!pwallet->MintableCoins()) {
+                    if (GetTime() - nMintableLastCheck > 5 * 60) // 5 minute check time for mintable again
                     {
                         nMintableLastCheck = GetTime();
                         fMintableCoins = pwallet->MintableCoins();
