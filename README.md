@@ -24,7 +24,7 @@ make
 make install # optional
 ```
 
-This will build credits-qt as well if the dependencies are met.
+This will build plexus-qt as well if the dependencies are met.
 
 Dependencies
 ---------------------
@@ -119,7 +119,7 @@ built by default.
 
 Notes
 -----
-The release is built with GCC and then "strip creditsd" to strip the debug
+The release is built with GCC and then "strip plexusd" to strip the debug
 symbols, which reduces the executable size by about 90%.
 
 miniupnpc
@@ -191,4 +191,12 @@ Hardening Flags:
 
     ./configure --enable-hardening
     ./configure --disable-hardening
+    
+Example Build Command
+--------------------
+Qt Wallet and Deamon, CLI version build:
 
+    ./autogen.sh && ./configure && make
+Deamon, CLI version install:
+
+    ./autogen.sh && ./configure && make install
