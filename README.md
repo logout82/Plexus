@@ -114,7 +114,7 @@ libqrencode (optional) can be installed with:
 
     sudo apt-get install libqrencode-dev
 
-Once these are installed, they will be found by configure and a credits-qt executable will be
+Once these are installed, they will be found by configure and a plexus-qt executable will be
 built by default.
 
 Notes
@@ -146,10 +146,10 @@ Berkeley DB
 It is recommended to use Berkeley DB 4.8. If you have to build it yourself:
 
 ```bash
-CREDITS_ROOT=$(pwd)
+PLEXUS=$(pwd)
 
-# Pick some path to install BDB to, here we create a directory within the credits directory
-BDB_PREFIX="${CREDITS_ROOT}/db4"
+# Pick some path to install BDB to, here we create a directory within the plexus directory
+BDB_PREFIX="${PLEXUS_ROOT}/db4"
 mkdir -p $BDB_PREFIX
 
 # Fetch the source and verify that it is not tampered with
@@ -166,7 +166,7 @@ make
 sudo make install
 
 # Configure Plexus to use our own-built instance of BDB
-cd $CREDITS_ROOT
+cd $PLEXUS_ROOT
 ./configure (other args...) LDFLAGS="-L${BDB_PREFIX}/lib/" CPPFLAGS="-I${BDB_PREFIX}/include/"
 ```
 
