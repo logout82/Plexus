@@ -54,7 +54,7 @@ System requirements
 --------------------
 
 C++ compilers are memory-hungry. It is recommended to have at least 3 GB of
-memory available when compiling Credits.
+memory available when compiling Plexus.
 
 Dependency Build Instructions: Ubuntu & Debian
 ----------------------------------------------
@@ -101,7 +101,7 @@ ZMQ dependencies (provides ZMQ API 4.x):
 Dependencies for the GUI: Ubuntu & Debian
 -----------------------------------------
 
-If you want to build Credits-Qt, make sure that the required packages for Qt development
+If you want to build Plexus-Qt, make sure that the required packages for Qt development
 are installed. Qt 5 is necessary to build the GUI.
 If both Qt 4 and Qt 5 are installed, Qt 5 will be used. Pass `--with-gui=qt5` to configure to choose Qt5.
 To build without GUI pass `--without-gui`.
@@ -165,7 +165,7 @@ cd db-4.8.30.NC/build_unix/
 make
 sudo make install
 
-# Configure Credits to use our own-built instance of BDB
+# Configure Plexus to use our own-built instance of BDB
 cd $CREDITS_ROOT
 ./configure (other args...) LDFLAGS="-L${BDB_PREFIX}/lib/" CPPFLAGS="-I${BDB_PREFIX}/include/"
 ```
@@ -183,7 +183,7 @@ If you need to build Boost yourself:
 
 Security
 --------
-To help make your Credits installation more secure by making certain attacks impossible to
+To help make your Plexus installation more secure by making certain attacks impossible to
 exploit even if a vulnerability is found, binaries are hardened by default.
 This can be disabled with:
 
