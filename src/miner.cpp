@@ -483,13 +483,11 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
 
     while (fGenerateBitcoins || fProofOfStake) {
 
-	   {
-            LOCK(cs_vNodes);
             if (vNodes.empty()) {
                 MilliSleep(1000);
                 continue;
             }
-        }
+      
 
         if (fProofOfStake) {
 
