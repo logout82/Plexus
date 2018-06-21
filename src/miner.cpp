@@ -7,7 +7,6 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "miner.h"
-
 #include "amount.h"
 #include "hash.h"
 #include "main.h"
