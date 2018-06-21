@@ -3,11 +3,12 @@
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2015-2017 The PIVX developers
 // Copyright (c) 2017 The Prufus developers
+// Copyright (c) 2018 The Plexus developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "miner.h"
-
 #include "amount.h"
 #include "hash.h"
 #include "main.h"
@@ -58,6 +59,7 @@ public:
 uint64_t nLastBlockTx = 0;
 uint64_t nLastBlockSize = 0;
 int64_t nLastCoinStakeSearchInterval = 0;
+//int64_t nLastCoinStakeSearchTime; // only initialized at startup
 
 // We want to sort transactions by priority and fee rate, so:
 typedef boost::tuple<double, CFeeRate, const CTransaction*> TxPriority;
@@ -91,6 +93,19 @@ void UpdateTime(CBlockHeader* pblock, const CBlockIndex* pindexPrev)
         pblock->nBits = GetNextWorkRequired(pindexPrev, pblock);
 }
 
+
+
+bool HasStaked()
+{
+	bool nStaking = false;
+    if (mapHashedBlocks.count(chainActive.Tip()->nHeight))
+        nStaking = true;
+    else if (mapHashedBlocks.count(chainActive.Tip()->nHeight - 1) && nLastCoinStakeSearchInterval)
+        nStaking = true;
+    return nStaking;
+}
+
+
 CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, bool fProofOfStake)
 {
     CReserveKey reservekey(pwallet);
@@ -118,6 +133,8 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
 
     // ppcoin: if coinstake available add coinstake tx
     static int64_t nLastCoinStakeSearchTime = GetAdjustedTime(); // only initialized at startup
+  	//if(nLastCoinStakeSearchTime==0)
+	//	nLastCoinStakeSearchTime = GetAdjustedTime(); // only initialized at startup
 
     if (fProofOfStake) {
         boost::this_thread::interruption_point();
@@ -128,6 +145,10 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
         int64_t nSearchTime = pblock->nTime; // search to current time
         bool fStakeFound = false;
         if (nSearchTime >= nLastCoinStakeSearchTime) {
+
+	//LogPrintf("nSearchTime:%d\n",nSearchTime);
+	//LogPrintf("nLastCoinStakeSearchTime:%d\n",nLastCoinStakeSearchTime);
+	
             unsigned int nTxNewTime = 0;
             if (pwallet->CreateCoinStake(*pwallet, pblock->nBits, nSearchTime - nLastCoinStakeSearchTime, txCoinStake, nTxNewTime)) {
                 pblock->nTime = nTxNewTime;
@@ -441,12 +462,16 @@ bool ProcessBlockFound(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
 }
 
 bool fGenerateBitcoins = false;
-
+static bool fMintableCoins = false;
+static int nMintableLastCheck = 0;
 // ***TODO*** that part changed in bitcoin, we are using a mix with old one here for now
 
 void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
 {
-    LogPrintf("PlexusMiner started\n");
+	if(fProofOfStake)
+	    LogPrintf("Plexus POS started\n");
+	else 
+		LogPrintf("PlexusMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
     RenameThread("plexus-miner");
 
@@ -455,35 +480,39 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
     unsigned int nExtraNonce = 0;
 
     //control the amount of times the client will check for mintable coins
-    static bool fMintableCoins = false;
-    static int nMintableLastCheck = 0;
 
-    if (fProofOfStake && (GetTime() - nMintableLastCheck > 5 * 60)) // 5 minute check time
-    {
-        nMintableLastCheck = GetTime();
-        fMintableCoins = pwallet->MintableCoins();
-    }
 
     while (fGenerateBitcoins || fProofOfStake) {
 
-	   {
-            LOCK(cs_vNodes);
             if (vNodes.empty()) {
                 MilliSleep(1000);
                 continue;
             }
-        }
+      
 
         if (fProofOfStake) {
+
+	    if ((GetTime() - nMintableLastCheck > 30)) // 30 seconds check time un-mint
+	    {
+		nMintableLastCheck = GetTime();
+		fMintableCoins = pwallet->MintableCoins();
+	    }
             if (chainActive.Tip()->nHeight < Params().LAST_POW_BLOCK()) {
 		
                 MilliSleep(5000);
                 continue;
             }
 	
-            while (chainActive.Tip()->nTime < 1528679162 || vNodes.empty() || pwallet->IsLocked() || !fMintableCoins || nReserveBalance >= pwallet->GetBalance() || !masternodeSync.IsSynced()) {
+            while (vNodes.empty() || pwallet->IsLocked() || !fMintableCoins || nReserveBalance >= pwallet->GetBalance() || !masternodeSync.IsSynced()) {
 	
                 nLastCoinStakeSearchInterval = 0;
+             if (!pwallet->MintableCoins()) {
+                    if (GetTime() - nMintableLastCheck > 5 * 60) // 5 minute check time for mintable again
+                    {
+                        nMintableLastCheck = GetTime();
+                        fMintableCoins = pwallet->MintableCoins();
+                    }
+                }
                 MilliSleep(5000);
                 if (!fGenerateBitcoins && !fProofOfStake)
                     continue;
@@ -500,7 +529,8 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
                 }
             }
         }
-
+	//LogPrintf("POS Check max(pwallet->nHashInterval: %d \n",max(pwallet->nHashInterval, (unsigned int)1));
+	//LogPrintf("POS Check(mapHashedBlocks.count(chainActive.Tip()->nHeight): %d \n",mapHashedBlocks.count(chainActive.Tip()->nHeight));
         //
         // Create new block
         //
