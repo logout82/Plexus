@@ -529,8 +529,7 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
                 }
             }
         }
-	//LogPrintf("POS Check max(pwallet->nHashInterval: %d \n",max(pwallet->nHashInterval, (unsigned int)1));
-	//LogPrintf("POS Check(mapHashedBlocks.count(chainActive.Tip()->nHeight): %d \n",mapHashedBlocks.count(chainActive.Tip()->nHeight));
+
         //
         // Create new block
         //
