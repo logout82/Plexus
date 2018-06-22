@@ -16,7 +16,7 @@ DEPENDPATH += . \
               src/primitives \
               src/qt \
               src/script \
-              src/test \
+#             src/test \
               src/univalue \
               src/leveldb/db \
               src/leveldb/issues \
@@ -25,10 +25,10 @@ DEPENDPATH += . \
               src/leveldb/util \
               src/qt/forms \
               src/qt/locale \
-              src/qt/test \
+#              src/qt/test \
               src/secp256k1/include \
               src/secp256k1/src \
-              src/test/data \
+#              src/test/data \
               src/leveldb/doc/bench \
               src/leveldb/helpers/memenv \
               src/leveldb/include/leveldb \
@@ -49,9 +49,9 @@ INCLUDEPATH += . \
                src/compat \
                src/secp256k1/include \
                src/leveldb/helpers/memenv \
-               src/test/data \
-               src/test \
-               src/qt/test \
+#               src/test/data \
+#               src/test \
+#               src/qt/test \
                src/secp256k1/src \
                src/secp256k1/src/java
 
@@ -78,14 +78,13 @@ HEADERS += src/activemasternode.h \
            src/crypter.h \
            src/obfuscation-relay.h \
            src/obfuscation.h \
-           src/prufus-config.h \
+           src/config/plexus-config.h \
            src/db.h \
            src/eccryptoverify.h \
            src/ecwrapper.h \
            src/hash.h \
            src/init.h \
            src/swifttx.h \
-           src/keepass.h \
            src/key.h \
            src/keystore.h \
            src/leveldbwrapper.h \
@@ -131,7 +130,7 @@ HEADERS += src/activemasternode.h \
            src/wallet_ismine.h \
            src/walletdb.h \
            src/compat/sanity.h \
-           src/config/prufus-config.h \
+           src/config/plexus-config.h \
            src/crypto/common.h \
            src/crypto/hmac_sha256.h \
            src/crypto/hmac_sha512.h \
@@ -222,7 +221,7 @@ HEADERS += src/activemasternode.h \
            src/script/sigcache.h \
            src/script/sign.h \
            src/script/standard.h \
-           src/test/bignum.h \
+#           src/test/bignum.h \
            src/univalue/univalue.h \
            src/univalue/univalue_escapes.h \
            src/leveldb/db/builder.h \
@@ -265,9 +264,9 @@ HEADERS += src/activemasternode.h \
            src/leveldb/util/testharness.h \
            src/leveldb/util/testutil.h \
            src/qt/forms/ui_aboutdialog.h \
-           src/qt/test/paymentrequestdata.h \
-           src/qt/test/paymentservertests.h \
-           src/qt/test/uritests.h \
+#           src/qt/test/paymentrequestdata.h \
+#           src/qt/test/paymentservertests.h \
+#           src/qt/test/uritests.h \
            src/secp256k1/include/secp256k1.h \
            src/secp256k1/src/ecdsa.h \
            src/secp256k1/src/ecdsa_impl.h \
@@ -303,17 +302,17 @@ HEADERS += src/activemasternode.h \
            src/secp256k1/src/testrand.h \
            src/secp256k1/src/testrand_impl.h \
            src/secp256k1/src/util.h \
-           src/test/data/alertTests.raw.h \
-           src/test/data/base58_encode_decode.json.h \
-           src/test/data/base58_keys_invalid.json.h \
-           src/test/data/base58_keys_valid.json.h \
-           src/test/data/script_invalid.json.h \
-           src/test/data/script_valid.json.h \
-           src/test/data/sig_canonical.json.h \
-           src/test/data/sig_noncanonical.json.h \
-           src/test/data/sighash.json.h \
-           src/test/data/tx_invalid.json.h \
-           src/test/data/tx_valid.json.h \
+#           src/test/data/alertTests.raw.h \
+#           src/test/data/base58_encode_decode.json.h \
+#           src/test/data/base58_keys_invalid.json.h \
+#           src/test/data/base58_keys_valid.json.h \
+#           src/test/data/script_invalid.json.h \
+#          src/test/data/script_valid.json.h \
+#          src/test/data/sig_canonical.json.h \
+#          src/test/data/sig_noncanonical.json.h \
+#          src/test/data/sighash.json.h \
+#          src/test/data/tx_invalid.json.h \
+#          src/test/data/tx_valid.json.h \
            src/leveldb/helpers/memenv/memenv.h \
            src/leveldb/include/leveldb/c.h \
            src/leveldb/include/leveldb/cache.h \
@@ -333,11 +332,12 @@ HEADERS += src/activemasternode.h \
            src/secp256k1/src/java/org_bitcoin_NativeSecp256k1.h \
            src/crypto/aes_helper.c \
            src/qt/bitcoinamountfield.moc \
-           src/qt/prufus.moc \
+           src/qt/plexus.moc \
            src/qt/intro.moc \
            src/qt/overviewpage.moc \
            src/qt/rpcconsole.moc \
-           src/secp256k1/src/secp256k1.c
+           src/secp256k1/src/secp256k1.c \
+
 FORMS += src/qt/forms/addressbookpage.ui \
          src/qt/forms/askpassphrasedialog.ui \
          src/qt/forms/coincontroldialog.ui \
@@ -374,17 +374,16 @@ SOURCES += src/activemasternode.cpp \
            src/crypter.cpp \
            src/obfuscation-relay.cpp \
            src/obfuscation.cpp \
-           src/prufus-cli.cpp \
-           src/prufus-tx.cpp \
-           src/prufus.cpp \
+           src/plexus-cli.cpp \
+           src/plexus-tx.cpp \
+           src/plexusd.cpp \
            src/db.cpp \
            src/eccryptoverify.cpp \
            src/ecwrapper.cpp \
-           src/editaddressdialog.cpp \
+           src/qt/editaddressdialog.cpp \
            src/hash.cpp \
            src/init.cpp \
            src/swifttx.cpp \
-           src/keepass.cpp \
            src/key.cpp \
            src/keystore.cpp \
            src/leveldbwrapper.cpp \
@@ -471,8 +470,8 @@ SOURCES += src/activemasternode.cpp \
            src/qt/coincontroltreewidget.cpp \
            src/qt/csvmodelwriter.cpp \
            src/qt/obfuscationconfig.cpp \
-           src/qt/prufus.cpp \
-           src/qt/prufusstrings.cpp \
+           src/qt/plexus.cpp \
+           src/qt/plexusstrings.cpp \
            src/qt/editaddressdialog.cpp \
            src/qt/guiutil.cpp \
            src/qt/intro.cpp \
@@ -516,47 +515,47 @@ SOURCES += src/activemasternode.cpp \
            src/script/sigcache.cpp \
            src/script/sign.cpp \
            src/script/standard.cpp \
-           src/test/accounting_tests.cpp \
-           src/test/alert_tests.cpp \
-           src/test/allocator_tests.cpp \
-           src/test/base32_tests.cpp \
-           src/test/base58_tests.cpp \
-           src/test/base64_tests.cpp \
-           src/test/bip32_tests.cpp \
-           src/test/bloom_tests.cpp \
-           src/test/checkblock_tests.cpp \
-           src/test/Checkpoints_tests.cpp \
-           src/test/coins_tests.cpp \
-           src/test/compress_tests.cpp \
-           src/test/crypto_tests.cpp \
-           src/test/DoS_tests.cpp \
-           src/test/getarg_tests.cpp \
-           src/test/hash_tests.cpp \
-           src/test/key_tests.cpp \
-           src/test/main_tests.cpp \
-           src/test/mempool_tests.cpp \
-           src/test/miner_tests.cpp \
-           src/test/mruset_tests.cpp \
-           src/test/multisig_tests.cpp \
-           src/test/netbase_tests.cpp \
-           src/test/pmt_tests.cpp \
-           src/test/rpc_tests.cpp \
-           src/test/rpc_wallet_tests.cpp \
-           src/test/sanity_tests.cpp \
-           src/test/script_P2SH_tests.cpp \
-           src/test/script_tests.cpp \
-           src/test/scriptnum_tests.cpp \
-           src/test/serialize_tests.cpp \
-           src/test/sighash_tests.cpp \
-           src/test/sigopcount_tests.cpp \
-           src/test/skiplist_tests.cpp \
-           src/test/test_prufus.cpp \
-           src/test/timedata_tests.cpp \
-           src/test/transaction_tests.cpp \
-           src/test/uint256_tests.cpp \
-           src/test/univalue_tests.cpp \
-           src/test/util_tests.cpp \
-           src/test/wallet_tests.cpp \
+#           src/test/accounting_tests.cpp \
+#           src/test/alert_tests.cpp \
+#           src/test/allocator_tests.cpp \
+#           src/test/base32_tests.cpp \
+#           src/test/base58_tests.cpp \
+#           src/test/base64_tests.cpp \
+#           src/test/bip32_tests.cpp \
+#           src/test/bloom_tests.cpp \
+#           src/test/checkblock_tests.cpp \
+#           src/test/Checkpoints_tests.cpp \
+#           src/test/coins_tests.cpp \
+#           src/test/compress_tests.cpp \
+#           src/test/crypto_tests.cpp \
+#           src/test/DoS_tests.cpp \
+#           src/test/getarg_tests.cpp \
+#           src/test/hash_tests.cpp \
+#           src/test/key_tests.cpp \
+#           src/test/main_tests.cpp \
+#           src/test/mempool_tests.cpp \
+#           src/test/miner_tests.cpp \
+#           src/test/mruset_tests.cpp \
+#           src/test/multisig_tests.cpp \
+#           src/test/netbase_tests.cpp \
+#           src/test/pmt_tests.cpp \
+#           src/test/rpc_tests.cpp \
+#           src/test/rpc_wallet_tests.cpp \
+#           src/test/sanity_tests.cpp \
+#           src/test/script_P2SH_tests.cpp \
+#           src/test/script_tests.cpp \
+#           src/test/scriptnum_tests.cpp \
+##           src/test/serialize_tests.cpp \
+#           src/test/sighash_tests.cpp \
+#           src/test/sigopcount_tests.cpp \
+#           src/test/skiplist_tests.cpp \
+#           src/test/test_plexus.cpp \
+#           src/test/timedata_tests.cpp \
+#           src/test/transaction_tests.cpp \
+#           src/test/uint256_tests.cpp \
+#           src/test/univalue_tests.cpp \
+#           src/test/util_tests.cpp \
+#           src/test/wallet_tests.cpp \
            src/univalue/gen.cpp \
            src/univalue/univalue.cpp \
            src/univalue/univalue_read.cpp \
@@ -628,9 +627,9 @@ SOURCES += src/activemasternode.cpp \
            src/leveldb/util/status.cc \
            src/leveldb/util/testharness.cc \
            src/leveldb/util/testutil.cc \
-           src/qt/test/paymentservertests.cpp \
-           src/qt/test/test_main.cpp \
-           src/qt/test/uritests.cpp \
+#           src/qt/test/paymentservertests.cpp \
+#           src/qt/test/test_main.cpp \
+#           src/qt/test/uritests.cpp \
            src/secp256k1/src/bench_inv.c \
            src/secp256k1/src/bench_sign.c \
            src/secp256k1/src/bench_verify.c \
@@ -641,21 +640,21 @@ SOURCES += src/activemasternode.cpp \
            src/leveldb/helpers/memenv/memenv.cc \
            src/leveldb/helpers/memenv/memenv_test.cc \
            src/secp256k1/src/java/org_bitcoin_NativeSecp256k1.c
-RESOURCES += src/qt/prufus.qrc src/qt/prufus_locale.qrc
+RESOURCES += src/qt/plexus.qrc src/qt/plexus_locale.qrc
 
-TRANSLATIONS += src/qt/locale/prufus_bg.ts \
-                src/qt/locale/prufus_de.ts \
-                src/qt/locale/prufus_en.ts \
-                src/qt/locale/prufus_es.ts \
-                src/qt/locale/prufus_fi.ts \
-                src/qt/locale/prufus_fr.ts \
-                src/qt/locale/prufus_it.ts \
-                src/qt/locale/prufus_ja.ts \
-                src/qt/locale/prufus_pl.ts \
-                src/qt/locale/prufus_pt.ts \
-                src/qt/locale/prufus_ru.ts \
-                src/qt/locale/prufus_sk.ts \
-                src/qt/locale/prufus_sv.ts \
-                src/qt/locale/prufus_vi.ts \
-                src/qt/locale/prufus_zh_CN.ts \
-                src/qt/locale/prufus_zh_TW.ts
+TRANSLATIONS += src/qt/locale/plexus_bg.ts \
+                src/qt/locale/plexus_de.ts \
+                src/qt/locale/plexus_en.ts \
+                src/qt/locale/plexus_es.ts \
+                src/qt/locale/plexus_fi.ts \
+                src/qt/locale/plexus_fr.ts \
+                src/qt/locale/plexus_it.ts \
+                src/qt/locale/plexus_ja.ts \
+                src/qt/locale/plexus_pl.ts \
+                src/qt/locale/plexus_pt.ts \
+                src/qt/locale/plexus_ru.ts \
+                src/qt/locale/plexus_sk.ts \
+                src/qt/locale/plexus_sv.ts \
+                src/qt/locale/plexus_vi.ts \
+                src/qt/locale/plexus_zh_CN.ts \
+                src/qt/locale/plexus_zh_TW.ts
