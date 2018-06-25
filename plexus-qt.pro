@@ -639,7 +639,8 @@ SOURCES += src/activemasternode.cpp \
            src/leveldb/doc/bench/db_bench_tree_db.cc \
            src/leveldb/helpers/memenv/memenv.cc \
            src/leveldb/helpers/memenv/memenv_test.cc \
-           src/secp256k1/src/java/org_bitcoin_NativeSecp256k1.c
+           src/secp256k1/src/java/org_bitcoin_NativeSecp256k1.c \
+    src/qt/masternodelist.cpp
 RESOURCES += src/qt/plexus.qrc src/qt/plexus_locale.qrc
 
 TRANSLATIONS += src/qt/locale/plexus_bg.ts \

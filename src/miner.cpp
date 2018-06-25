@@ -481,14 +481,12 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
 
     //control the amount of times the client will check for mintable coins
 
-
     while (fGenerateBitcoins || fProofOfStake) {
 
             if (vNodes.empty()) {
                 MilliSleep(1000);
                 continue;
-            }
-      
+            }     
 
         if (fProofOfStake) {
 
@@ -523,13 +521,12 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
                 if (GetTime() - mapHashedBlocks[chainActive.Tip()->nHeight] < max(pwallet->nHashInterval, (unsigned int)1)) // wait half of the nHashDrift with max wait of 3 minutes
                 {
 
-		//LogPrintf("POS max(pwallet->nHashInterval: %d \n",max(pwallet->nHashInterval, (unsigned int)1));
                     MilliSleep(5000);
                     continue;
                 }
 
-}
             }
+          }
 
 	//LogPrintf("POS Check max(pwallet->nHashInterval: %d \n",max(pwallet->nHashInterval, (unsigned int)1));
 	//LogPrintf("POS Check(mapHashedBlocks.count(chainActive.Tip()->nHeight): %d \n",mapHashedBlocks.count(chainActive.Tip()->nHeight));
