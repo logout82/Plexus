@@ -126,14 +126,15 @@ void MasternodeList::StartAll(std::string strCommand)
         CTxIn txin = CTxIn(uint256S(mne.getTxHash()), uint32_t(nIndex));
         CMasternode* pmn = mnodeman.Find(txin);
 
-        if ((strCommand == "start-missing") && (pmn != NULL)) continue;
+        if ((strCommand == "start-missing") && pmn) continue;
 
-        bool fSuccess = activeMasternode.Register(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError);
+//        bool fSuccess = activeMasternode.Register(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError);
+        bool fSuccess = CMasternodeBroadcast::Create(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError, mnb);
 
         if (fSuccess) {
             nCountSuccessful++;
-            //mnodeman.UpdateMasternodeList(mnb);
-            //mnb.Relay();
+            mnodeman.UpdateMasternodeList(mnb);
+            mnb.Relay();
         } else {
             nCountFailed++;
             strFailedHtml += "\nFailed to start " + mne.getAlias() + ". Error: " + strError;
