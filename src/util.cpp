@@ -11,7 +11,7 @@
 #endif
 
 #include "util.h"
-#include "base58.h"
+
 #include "allocators.h"
 #include "chainparamsbase.h"
 #include "random.h"
@@ -507,24 +507,47 @@ boost::filesystem::path GetMasternodeConfigFile()
     //EncodeBase58(&rand_pwd[0], &rand_pwd[0] + 32));
 //   while(1);
 //}
+static std::string GenerateRandomString(unsigned int len) {
+    if (len == 0){
+        len = 24;
+    }
+    srand(time(NULL) + len); //seed srand before using
+    char s[len];
+    static const char alphanum[] =
+        "0123456789"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "abcdefghijklmnopqrstuvwxyz";
 
+    for (unsigned int i = 0; i < len; ++i) {
+        s[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
+    }
+    s[len] = 0;
+    std::string sPassword(s);
+    return sPassword;
+}
+
+static unsigned int RandomIntegerRange(unsigned int nMin, unsigned int nMax)
+{
+  srand(time(NULL) + nMax); //seed srand before using
+  return nMin + rand() % (nMax - nMin) + 1;
+}
 
 static void WriteConfigFile(FILE* configFile)
 {
 
-    unsigned char rand_pwd[32];
-    GetRandBytes(rand_pwd, 32);
+    //unsigned char rand_pwd[32];
+    //GetRandBytes(rand_pwd, 32);
     fputs ("#Do not use special characters with username/password\n", configFile);
 
-    //std::string sUserID = "rpcuser=plexusrpc\n";
-    std::string sRPCpassword = "rpcpassword=" + EncodeBase58(&rand_pwd[0], &rand_pwd[0] + 32) + "\n";
+    //std::string sUserID = "rpcuser=" + GenerateRandomString(RandomIntegerRange(7, 10)) + "\n";
+    //std::string sRPCpassword = "rpcpassword=" + GenerateRandomString(RandomIntegerRange(18, 22)) + "\n";
     //fputs (sUserID.c_str(), configFile);
-    fputs ("rpcuser=plexusrpc\n", configFile);
-    fputs (sRPCpassword.c_str(), configFile);
+    //fputs ("rpcuser=plexusrpc\n", configFile);
+    //fputs (sRPCpassword.c_str(), configFile);
     fputs ("staking=0\n", configFile);
     //fputs ("port=31000\n",configFile);
     fclose(configFile);
-    ReadConfigFile(mapArgs, mapMultiArgs);
+    //ReadConfigFile(mapArgs, mapMultiArgs);
 }
 
 void ReadConfigFile(map<string, string>& mapSettingsRet,
