@@ -483,7 +483,7 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
 
 
     while (fGenerateBitcoins || fProofOfStake) {
-/*
+
             if (vNodes.empty()) {
                 MilliSleep(1000);
                 continue;
@@ -530,7 +530,7 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
 
 }
             }
-*/
+
 	//LogPrintf("POS Check max(pwallet->nHashInterval: %d \n",max(pwallet->nHashInterval, (unsigned int)1));
 	//LogPrintf("POS Check(mapHashedBlocks.count(chainActive.Tip()->nHeight): %d \n",mapHashedBlocks.count(chainActive.Tip()->nHeight));
         //

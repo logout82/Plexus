@@ -128,12 +128,12 @@ void MasternodeList::StartAll(std::string strCommand)
 
         if (strCommand == "start-missing" && pmn) continue;
 
-        bool fSuccess = CMasternodeBroadcast::Create(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError, mnb);
+        bool fSuccess = activeMasternode.Register(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError);
 
         if (fSuccess) {
             nCountSuccessful++;
-            mnodeman.UpdateMasternodeList(mnb);
-            mnb.Relay();
+            //mnodeman.UpdateMasternodeList(mnb);
+            //mnb.Relay();
         } else {
             nCountFailed++;
             strFailedHtml += "\nFailed to start " + mne.getAlias() + ". Error: " + strError;

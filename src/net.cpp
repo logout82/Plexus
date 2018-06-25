@@ -565,8 +565,8 @@ void CNode::copyStats(CNodeStats& stats)
 
     // Raw ping time is in microseconds, but show it to user as whole seconds (Plexus users should be well used to small numbers with many decimal places by now :)
     stats.dPingTime = (((double)nPingUsecTime) / 1e6);
+    //stats.dMinPing  = (((double)nMinPingUsecTime) / 1e6);
     stats.dPingWait = (((double)nPingUsecWait) / 1e6);
-
     // Leave string empty if addrLocal invalid (not filled in yet)
     stats.addrLocal = addrLocal.IsValid() ? addrLocal.ToString() : "";
 }
@@ -1095,7 +1095,7 @@ void ThreadDNSAddressSeed()
         MilliSleep(11 * 1000);
 
         LOCK(cs_vNodes);
-        if (vNodes.size() >= 8) {
+        if (vNodes.size() >= 4) {
             LogPrintf("P2P peers available. Skipped DNS seeding.\n");
             return;
         }
