@@ -11,7 +11,7 @@
 #endif
 
 #include "util.h"
-
+#include "base58.h"
 #include "allocators.h"
 #include "chainparamsbase.h"
 #include "random.h"
@@ -500,6 +500,33 @@ boost::filesystem::path GetMasternodeConfigFile()
     return pathConfigFile;
 }
 
+
+//void GenRPCPassword{
+    //unsigned char rand_pwd[32];
+    //GetRandBytes(rand_pwd, 32);
+    //EncodeBase58(&rand_pwd[0], &rand_pwd[0] + 32));
+//   while(1);
+//}
+
+
+static void WriteConfigFile(FILE* configFile)
+{
+
+    unsigned char rand_pwd[32];
+    GetRandBytes(rand_pwd, 32);
+    fputs ("#Do not use special characters with username/password\n", configFile);
+
+    //std::string sUserID = "rpcuser=plexusrpc\n";
+    std::string sRPCpassword = "rpcpassword=" + EncodeBase58(&rand_pwd[0], &rand_pwd[0] + 32) + "\n";
+    //fputs (sUserID.c_str(), configFile);
+    fputs ("rpcuser=plexusrpc\n", configFile);
+    fputs (sRPCpassword.c_str(), configFile);
+    fputs ("staking=0\n", configFile);
+    //fputs ("port=31000\n",configFile);
+    fclose(configFile);
+    ReadConfigFile(mapArgs, mapMultiArgs);
+}
+
 void ReadConfigFile(map<string, string>& mapSettingsRet,
     map<string, vector<string> >& mapMultiSettingsRet)
 {
@@ -508,8 +535,8 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
         // Create empty plexus.conf if it does not exist
         FILE* configFile = fopen(GetConfigFile().string().c_str(), "a");
         if (configFile != NULL)
-            fclose(configFile);
-        return; // Nothing to read, so just return
+             WriteConfigFile(configFile);
+        //return; // Nothing to read, so just return
     }
 
     set<string> setOptions;
@@ -794,3 +821,4 @@ void SetThreadPriority(int nPriority)
 #endif // PRIO_THREAD
 #endif // WIN32
 }
+

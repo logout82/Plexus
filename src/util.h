@@ -69,6 +69,8 @@ bool LogAcceptCategory(const char* category);
 /** Send a string to the log output */
 int LogPrintStr(const std::string& str);
 
+//void WriteConfigFile(FILE* configFile);
+
 #define LogPrintf(...) LogPrint(NULL, __VA_ARGS__)
 
 /**

@@ -126,7 +126,7 @@ void MasternodeList::StartAll(std::string strCommand)
         CTxIn txin = CTxIn(uint256S(mne.getTxHash()), uint32_t(nIndex));
         CMasternode* pmn = mnodeman.Find(txin);
 
-        if (strCommand == "start-missing" && pmn) continue;
+        if ((strCommand == "start-missing") && (pmn != NULL)) continue;
 
         bool fSuccess = activeMasternode.Register(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError);
 
