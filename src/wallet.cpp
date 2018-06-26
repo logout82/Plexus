@@ -2352,11 +2352,12 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     static std::set<pair<const CWalletTx*, unsigned int> > setStakeCoins;
 
      if (GetTime() - nLastStakeSetUpdate > nStakeSetUpdateTime) {
-        setStakeCoins.clear();
+        //setStakeCoins.clear();
 	if (!SelectStakeCoins(setStakeCoins, nBalance - nReserveBalance))
 	        return false;
  	nLastStakeSetUpdate = GetTime();
     }
+	else return false;
 
     if (setStakeCoins.empty())
         return false;
